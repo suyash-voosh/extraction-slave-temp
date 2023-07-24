@@ -4,8 +4,8 @@ phases:
   build:
     commands:
       # Update the system and install necessary packages (adjust for your OS)
-      - sudo yum update -y
-      - sudo yum install -y awscli
+      # - sudo yum update -y
+      # - sudo yum install -y awscli
 
       # Get the instance ID of the EC2 slave instance
       - INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
