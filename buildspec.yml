@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 19
+  build:
+    commands:
+      # Update the system and install necessary packages (adjust for your OS)
+      - sudo yum update -y
+      - sudo yum install -y awscli
+
+      # Get the instance ID of the EC2 slave instance
+      - INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+
+      # Create the AMI with the given name and description
+      - AMI_ID=$(aws ec2 create-image --instance-id $INSTANCE_ID --name "My-AMI" --description "AMI for Slave Instance" --no-reboot --block-device-mappings "[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"DeleteOnTermination\":true,\"VolumeType\":\"gp2\"}}]" --query 'ImageId' --output text)
+
+      # Store the AMI ID in a file for later use
+      - echo $AMI_ID > amiid.txt
+  post_build:
+    commands:
+      # Print the AMI ID to the console
+      - echo "AMI created with ID: $AMI_ID"
+
+artifacts:
+  files:
+    - amiid.txt
