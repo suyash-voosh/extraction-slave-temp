@@ -21,7 +21,7 @@ phases:
   post_build:
     commands:
       # Print the AMI ID to the console
-      - echo "AMI created with ID: $AMI_ID"
+      # - echo "AMI created with ID: $AMI_ID"
 
 artifacts:
   files:
